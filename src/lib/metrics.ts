@@ -1,7 +1,5 @@
 import { prisma } from "./prisma";
-import { EventType } from "@prisma/client";
-
-type MetricPayload = Record<string, unknown>;
+import { EventType, Prisma } from "@prisma/client";
 
 /**
  * Log a structured metric event to the database.
@@ -9,7 +7,7 @@ type MetricPayload = Record<string, unknown>;
  */
 export async function logEvent(
   eventType: EventType,
-  payload: MetricPayload
+  payload: Prisma.InputJsonValue
 ): Promise<void> {
   try {
     await prisma.metricEvent.create({

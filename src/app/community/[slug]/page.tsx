@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { formatCurrency, getInitials } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { FollowCommunityButton } from "@/components/community/follow-button";
 import { CommunityNarrative } from "@/components/community/community-narrative";
 
