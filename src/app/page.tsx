@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -30,13 +32,17 @@ export default async function Home() {
   let fundraisers: Awaited<ReturnType<typeof getFeaturedFundraisers>> = [];
   let communities: Awaited<ReturnType<typeof getCommunities>> = [];
 
-  try {
-    [fundraisers, communities] = await Promise.all([
-      getFeaturedFundraisers(),
-      getCommunities(),
-    ]);
-  } catch {
-    // Database not connected — show empty state
+  // Retry once on connection failure (Supabase free tier cold starts)
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      [fundraisers, communities] = await Promise.all([
+        getFeaturedFundraisers(),
+        getCommunities(),
+      ]);
+      break;
+    } catch {
+      if (attempt === 0) await new Promise((r) => setTimeout(r, 1000));
+    }
   }
 
   return (
