@@ -388,3 +388,11 @@ TASK-001: Design System & Tailwind Configuration
 - **Next**: Begin TASK-001 (Design System & Tailwind Configuration) followed by TASK-002 (Database Schema & Prisma Setup). These are independent foundation tasks.
 - **Blockers**: None
 - **Open Questions**: None
+
+### Checkpoint — 2026-03-17 21:30
+- **Phase**: Steady-State Development
+- **Completed**: TASK-001 (design system, UI components, 20 util tests), TASK-002 (Prisma schema, 7 models), TASK-003 (seed data: 6 users, 3 communities, 9 fundraisers, 33 donations), TASK-004 (auth backend: NextAuth.js, bcrypt, register API, middleware, 12 tests), TASK-005 (layout, header, landing page), TASK-006 (login + register pages)
+- **State**: 33 tests passing. Build clean. Foundation complete: design system, database schema, auth backend, layout, auth UI. No pages for the three core page types yet.
+- **Next**: TASK-007 (Fundraiser page display), TASK-008 (Mock donation flow), TASK-009 (Community page), TASK-010 (Profile page)
+- **Blockers**: None
+- **Open Questions**: None
