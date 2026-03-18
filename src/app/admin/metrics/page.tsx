@@ -11,6 +11,11 @@ export default async function MetricsPage() {
     redirect("/login?callbackUrl=/admin/metrics");
   }
 
+  const ADMIN_EMAILS = ["demo@ourstory.app", "norman.peter@challenger.gauntletai.com"];
+  if (!ADMIN_EMAILS.includes(session.user.email)) {
+    redirect("/");
+  }
+
   let summary = {
     page_load: 0,
     ai_invocation: 0,

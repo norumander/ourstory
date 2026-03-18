@@ -159,7 +159,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         </div>
         {!isOwnProfile && (
           <Suspense>
-            <FollowUserButton username={profile.username} userId={profile.id} />
+            <FollowUserButton username={profile.username} />
           </Suspense>
         )}
       </div>

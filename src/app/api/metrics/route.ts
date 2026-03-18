@@ -8,6 +8,11 @@ export async function GET() {
     return NextResponse.json({ error: "Authentication required" }, { status: 401 });
   }
 
+  const ADMIN_EMAILS = ["demo@ourstory.app", "norman.peter@challenger.gauntletai.com"];
+  if (!session.user.email || !ADMIN_EMAILS.includes(session.user.email)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const [
     pageLoadCount,
     aiInvocationCount,

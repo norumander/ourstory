@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 
 interface FollowCommunityButtonProps {
   slug: string;
-  communityId: string;
 }
 
 export function FollowCommunityButton({ slug }: FollowCommunityButtonProps) {
@@ -26,7 +25,8 @@ export function FollowCommunityButton({ slug }: FollowCommunityButtonProps) {
 
   async function handleToggle() {
     setLoading(true);
-    setFollowing(!following); // optimistic
+    const wasFollowing = following;
+    setFollowing(!wasFollowing); // optimistic
     try {
       const res = await fetch(`/api/communities/${slug}/follow`, {
         method: "POST",
@@ -36,7 +36,7 @@ export function FollowCommunityButton({ slug }: FollowCommunityButtonProps) {
         setFollowing(data.following);
       }
     } catch {
-      setFollowing(!following); // revert
+      setFollowing(wasFollowing); // proper revert
     }
     setLoading(false);
   }

@@ -99,7 +99,7 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
           </div>
           <div className="flex shrink-0 gap-3">
             <Suspense>
-              <FollowCommunityButton slug={community.slug} communityId={community.id} />
+              <FollowCommunityButton slug={community.slug} />
             </Suspense>
             <Link href={`/fundraiser/new?communityId=${community.id}`}>
               <Button>Start a Fundraiser</Button>

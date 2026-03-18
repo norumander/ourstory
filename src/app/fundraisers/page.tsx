@@ -2,6 +2,7 @@ export const revalidate = 60;
 
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Category } from "@prisma/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ProgressBar } from "@/components/ui/progress-bar";
@@ -19,13 +20,18 @@ const CATEGORIES = [
   "Other",
 ];
 
+const VALID_CATEGORIES = Object.values(Category) as string[];
+
 interface BrowsePageProps {
   searchParams: Promise<{ category?: string }>;
 }
 
 async function getFundraisers(category?: string) {
+  const validCategory = category && category !== "All" && VALID_CATEGORIES.includes(category)
+    ? (category as Category)
+    : undefined;
   return prisma.fundraiser.findMany({
-    where: category && category !== "All" ? { category: category as never } : undefined,
+    where: validCategory ? { category: validCategory } : undefined,
     orderBy: { createdAt: "desc" },
     include: {
       organizer: { select: { displayName: true, username: true } },

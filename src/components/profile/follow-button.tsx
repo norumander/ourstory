@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 
 interface FollowUserButtonProps {
   username: string;
-  userId: string;
 }
 
 export function FollowUserButton({ username }: FollowUserButtonProps) {
@@ -26,7 +25,8 @@ export function FollowUserButton({ username }: FollowUserButtonProps) {
 
   async function handleToggle() {
     setLoading(true);
-    setFollowing(!following); // optimistic
+    const wasFollowing = following;
+    setFollowing(!wasFollowing); // optimistic
     try {
       const res = await fetch(`/api/profiles/${username}/follow`, {
         method: "POST",
@@ -36,7 +36,7 @@ export function FollowUserButton({ username }: FollowUserButtonProps) {
         setFollowing(data.following);
       }
     } catch {
-      setFollowing(!following); // revert
+      setFollowing(wasFollowing); // proper revert
     }
     setLoading(false);
   }

@@ -22,7 +22,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const result = await registerUser({ email, password, displayName });
+  let result: Awaited<ReturnType<typeof registerUser>>;
+  try {
+    result = await registerUser({ email, password, displayName });
+  } catch (err) {
+    console.error("Registration failed:", err);
+    return NextResponse.json(
+      { error: "An unexpected error occurred during registration" },
+      { status: 500 }
+    );
+  }
 
   if ("error" in result) {
     return NextResponse.json(
