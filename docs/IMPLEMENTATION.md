@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Phase 1: Generate architecture and task documentation from PRD. (IN PROGRESS)
+TASK-001: Design System & Tailwind Configuration
 
 ## Tasks
 
@@ -380,3 +380,11 @@ Phase 1: Generate architecture and task documentation from PRD. (IN PROGRESS)
 - **Next**: Execute Phase 2 — Scaffold. Create directory structure per ARCHITECTURE.md, set up package.json, install dependencies (Next.js 15, Tailwind v4, Prisma, NextAuth, Vitest, Playwright), configure linter/formatter, verify test runner executes.
 - **Blockers**: None
 - **Open Questions**: None — all assumptions confirmed in Phase 0.
+
+### Checkpoint — 2026-03-17 21:00
+- **Phase**: Phase 2 & 3 — Scaffold + Validation (COMPLETE)
+- **Completed**: Created full directory structure per ARCHITECTURE.md. Installed all dependencies (Next.js 15, React 19, Tailwind CSS v4, Prisma, NextAuth v5, bcryptjs, Vitest, Playwright). Configured ESLint, PostCSS, TypeScript, Vitest, Playwright. Minimal Prisma schema, root layout, landing page placeholder. Build passes, test runner passes (1/1), linter clean.
+- **State**: Project scaffolded and verified. All tooling operational. No production code yet. 6 commits on main. Ready for steady-state development.
+- **Next**: Begin TASK-001 (Design System & Tailwind Configuration) followed by TASK-002 (Database Schema & Prisma Setup). These are independent foundation tasks.
+- **Blockers**: None
+- **Open Questions**: None
