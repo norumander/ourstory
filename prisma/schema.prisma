@@ -29,7 +29,7 @@ enum EventType {
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
-  passwordHash String
+  passwordHash String?
   displayName  String
   avatarUrl    String?
   username     String   @unique

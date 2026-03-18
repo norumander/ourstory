@@ -27,6 +27,9 @@ function CreateFundraiserForm() {
   const [communities, setCommunities] = useState<
     { id: string; name: string }[]
   >([]);
+  const [aiDraft, setAiDraft] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState("");
 
   useEffect(() => {
     fetch("/api/communities")
@@ -127,22 +130,93 @@ function CreateFundraiserForm() {
             />
 
             <div>
-              <label
-                htmlFor="story"
-                className="mb-1 block text-sm font-medium text-gray-700"
-              >
-                Story
-              </label>
+              <div className="mb-1 flex items-center justify-between">
+                <label
+                  htmlFor="story"
+                  className="block text-sm font-medium text-warm-700"
+                >
+                  Story
+                </label>
+                <button
+                  type="button"
+                  disabled={aiLoading}
+                  onClick={async () => {
+                    setAiError("");
+                    const form = document.querySelector("form") as HTMLFormElement;
+                    const title = new FormData(form).get("title") as string;
+                    const story = new FormData(form).get("story") as string;
+                    if (!title) { setAiError("Enter a title first"); return; }
+                    if (!story || story.length < 20) { setAiError("Write at least 20 characters of notes first"); return; }
+                    setAiLoading(true);
+                    try {
+                      const res = await fetch("/api/fundraisers/story-coach", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ title, notes: story }),
+                      });
+                      const data = await res.json();
+                      if (res.ok && data.draft) {
+                        setAiDraft(data.draft);
+                      } else {
+                        setAiError(data.error || "AI assistant unavailable");
+                      }
+                    } catch {
+                      setAiError("AI assistant unavailable");
+                    }
+                    setAiLoading(false);
+                  }}
+                  className="text-xs font-medium text-primary-600 hover:text-primary-700 disabled:opacity-50"
+                >
+                  {aiLoading ? "Writing..." : "✦ Help me write"}
+                </button>
+              </div>
+
+              {/* AI Draft display */}
+              {aiDraft && (
+                <div className="mb-3 rounded-lg border border-accent-300 bg-warm-100 p-4">
+                  <div className="mb-2 flex items-center gap-2">
+                    <span className="text-xs font-semibold text-accent-600">✦ AI-assisted draft — edit to make it yours</span>
+                  </div>
+                  <p className="mb-3 whitespace-pre-wrap font-serif text-sm leading-relaxed text-warm-800">
+                    {aiDraft}
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const textarea = document.getElementById("story") as HTMLTextAreaElement;
+                        if (textarea) { textarea.value = aiDraft; }
+                        setAiDraft(null);
+                      }}
+                      className="rounded-md bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700"
+                    >
+                      Use this draft
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAiDraft(null)}
+                      className="rounded-md border border-warm-300 px-3 py-1.5 text-xs font-medium text-warm-700 hover:bg-warm-100"
+                    >
+                      Discard
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {aiError && (
+                <p className="mb-2 text-xs text-error-600">{aiError}</p>
+              )}
+
               <textarea
                 id="story"
                 name="story"
                 rows={6}
                 required
-                placeholder="Share why you're raising funds (at least 50 characters)..."
-                className={`w-full rounded-lg border px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                placeholder="Share why you're raising funds (at least 50 characters). Write rough notes and click 'Help me write' for an AI-polished draft..."
+                className={`w-full rounded-lg border px-3 py-2 text-base text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                   errors.story
                     ? "border-error-500 focus:ring-error-500"
-                    : "border-gray-300 focus:ring-primary-500"
+                    : "border-warm-300 focus:ring-primary-500"
                 }`}
               />
               {errors.story && (

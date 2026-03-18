@@ -8,13 +8,27 @@ export function ShareButton() {
   const [showToast, setShowToast] = useState(false);
 
   const handleShare = useCallback(async () => {
+    const url = window.location.href;
+    const title = document.title;
+
+    // Use Web Share API on mobile if available
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+        return;
+      } catch (err) {
+        // User cancelled or share failed — fall through to clipboard
+        if ((err as Error).name === "AbortError") return;
+      }
+    }
+
+    // Fallback: copy to clipboard
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(url);
       setShowToast(true);
     } catch {
-      // Fallback for older browsers
       const textArea = document.createElement("textarea");
-      textArea.value = window.location.href;
+      textArea.value = url;
       textArea.style.position = "fixed";
       textArea.style.left = "-9999px";
       document.body.appendChild(textArea);
