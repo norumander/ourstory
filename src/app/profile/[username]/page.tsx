@@ -249,6 +249,36 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
         {/* Sidebar */}
         <div className="space-y-6 lg:col-span-1">
+          {/* My Fundraisers */}
+          {profile.fundraisers.length > 0 && (
+            <section>
+              <h3 className="mb-3 font-serif text-lg font-semibold text-warm-900">
+                {isOwnProfile ? "My Fundraisers" : "Fundraisers"}
+              </h3>
+              <div className="space-y-2">
+                {profile.fundraisers.map((f) => (
+                  <Link
+                    key={f.id}
+                    href={`/fundraiser/${f.id}`}
+                    className="block rounded-lg border border-warm-200 p-3 hover:bg-warm-100"
+                  >
+                    <p className="line-clamp-1 text-sm font-medium text-warm-900">
+                      {f.title}
+                    </p>
+                    <div className="mt-1 flex items-center justify-between text-xs">
+                      <span className="text-accent-500">
+                        {formatCurrency(f.raisedAmount)} raised
+                      </span>
+                      <Badge variant="primary" className="text-[10px]">
+                        {f.category}
+                      </Badge>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Highlights */}
           {profile.highlights.length > 0 && (
             <section>

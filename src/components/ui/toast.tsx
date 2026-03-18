@@ -13,7 +13,7 @@ interface ToastProps {
 const variantStyles = {
   success: "bg-success-600 text-white",
   error: "bg-error-600 text-white",
-  info: "bg-gray-800 text-white",
+  info: "bg-warm-800 text-white",
 };
 
 export function Toast({

@@ -112,10 +112,10 @@ function CreateFundraiserForm() {
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
       <Card>
         <CardHeader>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-warm-900">
             Start a fundraiser
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-warm-500">
             Tell your story and set your goal
           </p>
         </CardHeader>
@@ -229,12 +229,12 @@ function CreateFundraiserForm() {
             <div>
               <label
                 htmlFor="goalAmount"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-warm-700"
               >
                 Goal amount (USD)
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-warm-500">
                   $
                 </span>
                 <input
@@ -246,10 +246,10 @@ function CreateFundraiserForm() {
                   max="1000000"
                   required
                   placeholder="5,000"
-                  className={`w-full rounded-lg border px-3 py-2 pl-7 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                  className={`w-full rounded-lg border px-3 py-2 pl-7 text-base text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                     errors.goalAmount
                       ? "border-error-500 focus:ring-error-500"
-                      : "border-gray-300 focus:ring-primary-500"
+                      : "border-warm-300 focus:ring-primary-500"
                   }`}
                 />
               </div>
@@ -263,7 +263,7 @@ function CreateFundraiserForm() {
             <div>
               <label
                 htmlFor="category"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-warm-700"
               >
                 Category
               </label>
@@ -271,10 +271,10 @@ function CreateFundraiserForm() {
                 id="category"
                 name="category"
                 required
-                className={`w-full rounded-lg border px-3 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                className={`w-full rounded-lg border px-3 py-2 text-base text-warm-900 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                   errors.category
                     ? "border-error-500 focus:ring-error-500"
-                    : "border-gray-300 focus:ring-primary-500"
+                    : "border-warm-300 focus:ring-primary-500"
                 }`}
               >
                 <option value="">Select a category</option>
@@ -302,7 +302,7 @@ function CreateFundraiserForm() {
             <div>
               <label
                 htmlFor="communityId"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-warm-700"
               >
                 Community (optional)
               </label>
@@ -310,7 +310,7 @@ function CreateFundraiserForm() {
                 id="communityId"
                 name="communityId"
                 defaultValue={preselectedCommunityId}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
+                className="w-full rounded-lg border border-warm-300 px-3 py-2 text-base text-warm-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
               >
                 <option value="">No community</option>
                 {communities.map((c) => (

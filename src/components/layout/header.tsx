@@ -17,7 +17,7 @@ export function Header() {
         className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6"
         aria-label="Main navigation"
       >
-        {/* Logo — Lora serif */}
+        {/* Logo */}
         <Link
           href="/"
           className="flex items-center gap-2 font-serif text-xl font-bold text-primary-600"
@@ -29,12 +29,25 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-1 md:flex">
+          <Link
+            href="/"
+            className="rounded-lg px-3 py-2 text-sm font-medium text-warm-600 hover:bg-warm-100 hover:text-warm-900"
+          >
+            Home
+          </Link>
           {status === "authenticated" && session?.user ? (
             <>
               <Link
-                href={`/profile/${session.user.username}`}
-                className="flex min-h-[44px] items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"
+                href="/fundraiser/new"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-warm-600 hover:bg-warm-100 hover:text-warm-900"
+              >
+                Create
+              </Link>
+              <div className="ml-2 h-5 w-px bg-warm-300" />
+              <Link
+                href={`/profile/${(session.user as { username?: string }).username}`}
+                className="ml-2 flex min-h-[44px] items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-xs font-semibold text-white ring-2 ring-accent-400">
                   {getInitials(session.user.name || "")}
@@ -51,7 +64,8 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link href="/login">
+              <div className="ml-2 h-5 w-px bg-warm-300" />
+              <Link href="/login" className="ml-2">
                 <Button variant="ghost" size="sm">
                   Log in
                 </Button>
@@ -105,17 +119,31 @@ export function Header() {
         )}
       >
         <div className="space-y-1 px-4 py-3">
+          <Link
+            href="/"
+            className="flex min-h-[44px] items-center rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Home
+          </Link>
           {status === "authenticated" && session?.user ? (
             <>
               <Link
-                href={`/profile/${session.user.username}`}
+                href="/fundraiser/new"
+                className="flex min-h-[44px] items-center rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Create a fundraiser
+              </Link>
+              <Link
+                href={`/profile/${(session.user as { username?: string }).username}`}
                 className="flex min-h-[44px] items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-xs font-semibold text-white ring-2 ring-accent-400">
                   {getInitials(session.user.name || "")}
                 </span>
-                {session.user.name}
+                My profile
               </Link>
               <button
                 className="flex min-h-[44px] w-full items-center rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"

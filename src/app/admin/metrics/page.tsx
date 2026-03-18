@@ -50,7 +50,7 @@ export default async function MetricsPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">
+      <h1 className="mb-6 text-2xl font-bold text-warm-900">
         Metrics Dashboard
       </h1>
 
@@ -58,15 +58,15 @@ export default async function MetricsPage() {
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         <Card>
           <CardContent className="py-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{total}</p>
-            <p className="text-xs text-gray-500">Total Events</p>
+            <p className="text-2xl font-bold text-warm-900">{total}</p>
+            <p className="text-xs text-warm-500">Total Events</p>
           </CardContent>
         </Card>
         {Object.entries(summary).map(([type, count]) => (
           <Card key={type}>
             <CardContent className="py-4 text-center">
-              <p className="text-2xl font-bold text-gray-900">{count}</p>
-              <p className="text-xs text-gray-500">{type.replace("_", " ")}</p>
+              <p className="text-2xl font-bold text-warm-900">{count}</p>
+              <p className="text-xs text-warm-500">{type.replace("_", " ")}</p>
             </CardContent>
           </Card>
         ))}
@@ -75,27 +75,27 @@ export default async function MetricsPage() {
       {/* Recent Events */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-warm-900">
             Recent Events
           </h2>
         </CardHeader>
         <CardContent>
           {recentEvents.length === 0 ? (
-            <p className="text-sm text-gray-500">No events recorded yet.</p>
+            <p className="text-sm text-warm-500">No events recorded yet.</p>
           ) : (
             <div className="space-y-2">
               {recentEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-sm"
+                  className="flex items-center gap-3 rounded-lg border border-warm-100 p-3 text-sm"
                 >
                   <Badge variant={eventTypeColors[event.eventType] || "default"}>
                     {event.eventType}
                   </Badge>
-                  <pre className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray-600">
+                  <pre className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-warm-600">
                     {JSON.stringify(event.payload)}
                   </pre>
-                  <span className="shrink-0 text-xs text-gray-400">
+                  <span className="shrink-0 text-xs text-warm-400">
                     {formatRelativeTime(event.timestamp)}
                   </span>
                 </div>

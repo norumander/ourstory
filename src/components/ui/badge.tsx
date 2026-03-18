@@ -8,12 +8,12 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-gray-100 text-gray-700",
+  default: "bg-warm-100 text-warm-700",
   primary: "bg-primary-100 text-primary-700",
   success: "bg-success-50 text-success-700",
   warning: "bg-warning-50 text-warning-600",
   error: "bg-error-50 text-error-700",
-  outline: "border border-gray-300 text-gray-700",
+  outline: "border border-warm-300 text-warm-700",
 };
 
 export function Badge({ className, variant = "default", ...props }: BadgeProps) {
