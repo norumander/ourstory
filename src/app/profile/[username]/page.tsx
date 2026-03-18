@@ -141,14 +141,20 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           </h1>
           <p className="text-sm text-warm-500">@{profile.username}</p>
           <div className="mt-2 flex gap-4 text-sm text-warm-500">
-            <span>
+            <Link
+              href={`/profile/${profile.username}/connections?tab=followers`}
+              className="hover:text-primary-600"
+            >
               <strong className="text-warm-900">{profile._count.followers}</strong>{" "}
               follower{profile._count.followers !== 1 ? "s" : ""}
-            </span>
-            <span>
+            </Link>
+            <Link
+              href={`/profile/${profile.username}/connections?tab=following`}
+              className="hover:text-primary-600"
+            >
               <strong className="text-warm-900">{profile._count.following + profile._count.communityFollows}</strong>{" "}
               following
-            </span>
+            </Link>
           </div>
         </div>
         {!isOwnProfile && (
