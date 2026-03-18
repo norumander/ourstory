@@ -96,8 +96,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return true;
     },
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user, account }) {
+      if (account && token.email) {
+        // First sign-in (OAuth or credentials) — look up database user
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email },
+          select: { id: true, username: true },
+        });
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.username = dbUser.username;
+        }
+      } else if (user) {
         token.id = user.id;
         token.username = (user as { username?: string }).username;
       }
