@@ -1,5 +1,4 @@
 import { generateCommunityNarrative } from "@/lib/ai/community-narrative";
-import { Badge } from "@/components/ui/badge";
 
 interface CommunityNarrativeProps {
   name: string;
@@ -16,17 +15,19 @@ export async function CommunityNarrative(props: CommunityNarrativeProps) {
   if (!narrative) return null;
 
   return (
-    <div className="mb-8 rounded-lg border border-primary-100 bg-primary-50 p-4">
-      <div className="mb-2 flex items-center gap-2">
-        <span className="text-lg">📖</span>
-        <h3 className="text-sm font-semibold text-primary-700">
-          Community Story
-        </h3>
-        <Badge variant="outline" className="text-xs">
-          AI-generated narrative
-        </Badge>
+    <div className="mb-8 relative rounded-xl bg-gradient-to-br from-warm-100 to-warm-200 p-6">
+      <div className="absolute -top-px left-6 rounded-b-md bg-accent-500 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
+        ✦ Community Story
       </div>
-      <p className="text-sm leading-relaxed text-gray-700">{narrative}</p>
+      <p className="mt-2 font-serif text-lg italic leading-relaxed text-warm-800">
+        {narrative}
+      </p>
+      <div className="mt-3 flex items-center gap-2 text-xs text-warm-500">
+        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent-400 text-[8px] text-white">
+          ✦
+        </span>
+        AI-generated narrative
+      </div>
     </div>
   );
 }

@@ -41,10 +41,10 @@ function LoginForm() {
 
   return (
     <div className="mx-auto flex min-h-[calc(100vh-64px)] max-w-md items-center px-4 py-12">
-      <Card className="w-full">
+      <Card className="w-full border-warm-300">
         <CardHeader>
-          <h1 className="text-2xl font-bold text-gray-900">Log in</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="font-serif text-2xl font-bold text-warm-900">Log in</h1>
+          <p className="text-sm text-warm-500">
             Welcome back to ourstory
           </p>
         </CardHeader>
@@ -78,7 +78,7 @@ function LoginForm() {
               {loading ? "Logging in..." : "Log in"}
             </Button>
           </form>
-          <p className="mt-4 text-center text-sm text-gray-500">
+          <p className="mt-4 text-center text-sm text-warm-500">
             Don&apos;t have an account?{" "}
             <Link
               href="/register"

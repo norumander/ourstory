@@ -52,57 +52,70 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      {/* Hero Image */}
-      {fundraiser.imageUrl && (
-        <div className="mb-6 aspect-video w-full overflow-hidden rounded-xl">
+      {/* Hero Image with overlaid title */}
+      <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-xl">
+        {fundraiser.imageUrl ? (
           <img
             src={fundraiser.imageUrl}
             alt={fundraiser.title}
             className="h-full w-full object-cover"
           />
-        </div>
-      )}
-
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Main Content */}
-        <div className="lg:col-span-2">
-          <h1 className="text-3xl font-bold text-gray-900">{fundraiser.title}</h1>
-
-          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-500">
+        ) : (
+          <div className="h-full w-full bg-warm-200" />
+        )}
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        {/* Overlaid content */}
+        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+          <div className="flex flex-wrap items-center gap-3 mb-3">
             <Badge variant="primary">{fundraiser.category}</Badge>
             {fundraiser.community && (
               <Link
                 href={`/community/${fundraiser.community.slug}`}
-                className="text-primary-600 hover:underline"
+                className="text-sm font-medium text-white/90 hover:text-white hover:underline"
               >
                 {fundraiser.community.name}
               </Link>
             )}
-            <span>Created {formatDate(fundraiser.createdAt)}</span>
           </div>
+          <h1 className="font-serif text-3xl font-bold text-white sm:text-4xl">
+            {fundraiser.title}
+          </h1>
+        </div>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Main Content */}
+        <div className="lg:col-span-2">
+          {/* Meta line */}
+          <p className="text-sm text-warm-500">
+            Created {formatDate(fundraiser.createdAt)}
+          </p>
 
           {/* Organizer */}
           <div className="mt-6 flex items-center gap-3">
             <Link href={`/profile/${fundraiser.organizer.username}`}>
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 text-sm font-semibold text-primary-700">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-sm font-semibold text-white ring-2 ring-accent-400">
                 {getInitials(fundraiser.organizer.displayName)}
               </span>
             </Link>
             <div>
               <Link
                 href={`/profile/${fundraiser.organizer.username}`}
-                className="font-medium text-gray-900 hover:text-primary-600"
+                className="font-medium text-warm-900 hover:text-primary-600"
               >
                 {fundraiser.organizer.displayName}
               </Link>
-              <p className="text-xs text-gray-500">Organizer</p>
+              <p className="text-xs text-warm-500">Organizer</p>
             </div>
           </div>
 
           {/* Story */}
-          <div className="mt-6">
-            <h2 className="mb-2 text-lg font-semibold text-gray-900">Story</h2>
-            <div className="whitespace-pre-wrap text-gray-700">
+          <div className="mt-8">
+            <h2 className="mb-3 font-serif text-xl font-semibold text-warm-900">
+              Story
+            </h2>
+            <div className="whitespace-pre-wrap font-serif text-warm-700 leading-relaxed">
               {fundraiser.story}
             </div>
           </div>
@@ -118,10 +131,10 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
             />
           </Suspense>
 
-          {/* Donations */}
+          {/* Words of support */}
           <div className="mt-8">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
-              Donations ({fundraiser.donationCount})
+            <h2 className="mb-4 font-serif text-xl font-semibold text-warm-900">
+              Words of support ({fundraiser.donationCount})
             </h2>
             <Suspense
               fallback={
@@ -129,7 +142,7 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
                   {[1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="h-16 animate-pulse rounded-lg bg-gray-100"
+                      className="h-16 animate-pulse rounded-lg bg-warm-100"
                     />
                   ))}
                 </div>
@@ -142,27 +155,44 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
 
         {/* Sidebar */}
         <div className="lg:col-span-1">
-          <Card className="sticky top-20">
+          <Card className="sticky top-20 border-warm-300 bg-white">
             <CardContent className="space-y-4 py-6">
               <div>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="font-serif text-3xl font-bold text-warm-900">
                   {formatCurrency(fundraiser.raisedAmount)}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-warm-500">
                   raised of {formatCurrency(fundraiser.goalAmount)} goal
                 </p>
               </div>
 
-              <ProgressBar value={progress} showPercentage />
+              <div className="w-full">
+                <div className="mb-1 flex items-center justify-between text-sm">
+                  <span className="text-warm-600">{progress}%</span>
+                </div>
+                <div
+                  className="h-3 w-full overflow-hidden rounded-full bg-warm-200"
+                  role="progressbar"
+                  aria-valuenow={progress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label="Fundraising progress"
+                >
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400 transition-all duration-500 ease-out"
+                    style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }}
+                  />
+                </div>
+              </div>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-warm-600">
                 {fundraiser.donationCount} donation
                 {fundraiser.donationCount !== 1 ? "s" : ""}
               </p>
 
               <div className="space-y-2">
                 <Link href={`/fundraiser/${fundraiser.id}/donate`} className="block">
-                  <Button className="w-full" size="lg">
+                  <Button className="w-full bg-primary-600 hover:bg-primary-700" size="lg">
                     Donate
                   </Button>
                 </Link>

@@ -38,127 +38,134 @@ export default async function Home() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      {/* Hero */}
-      <section className="mb-12 text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Every donation tells a{" "}
-          <span className="text-primary-600">story</span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
-          ourstory uses AI to transform raw crowdfunding data into
-          meaningful narratives — surfacing the real impact of your
-          generosity.
-        </p>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <Link href="/register">
-            <Button size="lg">Get started</Button>
-          </Link>
-          <Link href="/register">
-            <Button variant="outline" size="lg">
-              Start a fundraiser
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Featured Fundraisers */}
-      {fundraisers.length > 0 && (
-        <section className="mb-12">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900">
-            Featured fundraisers
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {fundraisers.map((f) => (
-              <Link key={f.id} href={`/fundraiser/${f.id}`}>
-                <Card className="h-full transition-shadow hover:shadow-md">
-                  {f.imageUrl && (
-                    <div className="aspect-video w-full overflow-hidden rounded-t-xl">
-                      <img
-                        src={f.imageUrl}
-                        alt={f.title}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <CardContent className="space-y-3">
-                    <Badge variant="primary">{f.category}</Badge>
-                    <h3 className="line-clamp-2 font-semibold text-gray-900">
-                      {f.title}
-                    </h3>
-                    <ProgressBar
-                      value={calculateProgress(f.raisedAmount, f.goalAmount)}
-                      showPercentage={false}
-                    />
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="font-semibold text-gray-900">
-                        {formatCurrency(f.raisedAmount)}
-                      </span>
-                      <span className="text-gray-500">
-                        of {formatCurrency(f.goalAmount)}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-500">
-                      by{" "}
-                      <span className="text-primary-600">
-                        {f.organizer.displayName}
-                      </span>
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Communities */}
-      {communities.length > 0 && (
-        <section className="mb-12">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900">
-            Communities
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {communities.map((c) => (
-              <Link key={c.id} href={`/community/${c.slug}`}>
-                <Card className="h-full transition-shadow hover:shadow-md">
-                  {c.imageUrl && (
-                    <div className="aspect-video w-full overflow-hidden rounded-t-xl">
-                      <img
-                        src={c.imageUrl}
-                        alt={c.name}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <CardContent>
-                    <h3 className="mb-2 font-semibold text-gray-900">
-                      {c.name}
-                    </h3>
-                    <p className="mb-3 line-clamp-2 text-sm text-gray-600">
-                      {c.description}
-                    </p>
-                    <div className="flex gap-4 text-xs text-gray-500">
-                      <span>{c._count.followers} followers</span>
-                      <span>{c._count.fundraisers} fundraisers</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Empty state when no data */}
-      {fundraisers.length === 0 && communities.length === 0 && (
-        <section className="py-16 text-center">
-          <p className="text-lg text-gray-500">
-            No fundraisers yet. Connect a database and run the seed script
-            to get started.
+    <div className="min-h-screen bg-warm-50">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        {/* Hero */}
+        <section className="mb-12 text-center">
+          <h1 className="font-serif text-4xl font-bold tracking-tight text-warm-900 sm:text-5xl">
+            Every donation tells a{" "}
+            <span className="text-primary-600">story</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-warm-600">
+            ourstory uses AI to transform raw crowdfunding data into
+            meaningful narratives — surfacing the real impact of your
+            generosity.
           </p>
+          <div className="mt-8 flex items-center justify-center gap-4">
+            <Link href="/register">
+              <Button size="lg">Get started</Button>
+            </Link>
+            <Link href="/register">
+              <Button variant="outline" size="lg">
+                Start a fundraiser
+              </Button>
+            </Link>
+          </div>
         </section>
-      )}
+
+        {/* Featured Fundraisers */}
+        {fundraisers.length > 0 && (
+          <section className="mb-12">
+            <h2 className="mb-6 font-serif text-2xl font-bold text-warm-900">
+              Featured fundraisers
+            </h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {fundraisers.map((f) => (
+                <Link key={f.id} href={`/fundraiser/${f.id}`}>
+                  <Card className="h-full border-warm-300 bg-white transition-shadow hover:shadow-md">
+                    <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
+                      {f.imageUrl ? (
+                        <img
+                          src={f.imageUrl}
+                          alt={f.title}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-full w-full bg-warm-200" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <Badge variant="primary">{f.category}</Badge>
+                        <h3 className="mt-2 line-clamp-2 font-serif text-lg font-semibold text-white drop-shadow-sm">
+                          {f.title}
+                        </h3>
+                      </div>
+                    </div>
+                    <CardContent className="space-y-3">
+                      <ProgressBar
+                        value={calculateProgress(f.raisedAmount, f.goalAmount)}
+                        showPercentage={false}
+                      />
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-semibold text-warm-900">
+                          {formatCurrency(f.raisedAmount)}
+                        </span>
+                        <span className="text-warm-500">
+                          of {formatCurrency(f.goalAmount)}
+                        </span>
+                      </div>
+                      <p className="text-xs text-warm-500">
+                        by{" "}
+                        <span className="text-primary-600">
+                          {f.organizer.displayName}
+                        </span>
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Communities */}
+        {communities.length > 0 && (
+          <section className="mb-12">
+            <h2 className="mb-6 font-serif text-2xl font-bold text-warm-900">
+              Communities
+            </h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {communities.map((c) => (
+                <Link key={c.id} href={`/community/${c.slug}`}>
+                  <Card className="h-full border-warm-300 bg-white transition-shadow hover:shadow-md">
+                    {c.imageUrl && (
+                      <div className="aspect-video w-full overflow-hidden rounded-t-xl">
+                        <img
+                          src={c.imageUrl}
+                          alt={c.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <CardContent>
+                      <h3 className="mb-2 font-serif font-semibold text-warm-900">
+                        {c.name}
+                      </h3>
+                      <p className="mb-3 line-clamp-2 text-sm text-warm-600">
+                        {c.description}
+                      </p>
+                      <div className="flex gap-4 text-xs text-warm-500">
+                        <span>{c._count.followers} followers</span>
+                        <span>{c._count.fundraisers} fundraisers</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Empty state when no data */}
+        {fundraisers.length === 0 && communities.length === 0 && (
+          <section className="py-16 text-center">
+            <p className="text-lg text-warm-500">
+              No fundraisers yet. Connect a database and run the seed script
+              to get started.
+            </p>
+          </section>
+        )}
+      </div>
     </div>
   );
 }

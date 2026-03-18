@@ -75,10 +75,10 @@ export default function DonatePage() {
         <Card className="w-full text-center">
           <CardContent className="py-12">
             <div className="mb-4 text-5xl">💜</div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="font-serif text-2xl font-bold text-warm-900">
               Thank you for your generosity!
             </h1>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-warm-600">
               Your mock donation has been recorded.
             </p>
             <div className="mt-6">
@@ -97,14 +97,14 @@ export default function DonatePage() {
       <Card className="w-full">
         {/* Mock payment banner — GR-SEC-3 */}
         <div className="rounded-t-xl bg-accent-500 px-6 py-4 text-center">
-          <p className="text-sm font-bold text-gray-900">
+          <p className="text-sm font-bold text-warm-900">
             ⚠️ This is a demo — no real money is being charged
           </p>
         </div>
 
         <CardHeader>
-          <h1 className="text-2xl font-bold text-gray-900">Make a donation</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="font-serif text-2xl font-bold text-warm-900">Make a donation</h1>
+          <p className="text-sm text-warm-500">
             Your contribution makes a difference
           </p>
         </CardHeader>
@@ -119,7 +119,7 @@ export default function DonatePage() {
                 Amount (USD)
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-warm-500">
                   $
                 </span>
                 <input
@@ -131,10 +131,10 @@ export default function DonatePage() {
                   max="10000"
                   required
                   placeholder="25.00"
-                  className={`w-full rounded-lg border px-3 py-2 pl-7 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                  className={`w-full rounded-lg border px-3 py-2 pl-7 text-base text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                     errors.amount
                       ? "border-error-500 focus:ring-error-500"
-                      : "border-gray-300 focus:ring-primary-500"
+                      : "border-warm-300 focus:ring-primary-500"
                   }`}
                   aria-invalid={errors.amount ? "true" : undefined}
                   aria-describedby={errors.amount ? "amount-error" : undefined}
@@ -160,10 +160,10 @@ export default function DonatePage() {
                 rows={3}
                 maxLength={500}
                 placeholder="Write an encouraging message..."
-                className={`w-full rounded-lg border px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                className={`w-full rounded-lg border px-3 py-2 text-base text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                   errors.message
                     ? "border-error-500 focus:ring-error-500"
-                    : "border-gray-300 focus:ring-primary-500"
+                    : "border-warm-300 focus:ring-primary-500"
                 }`}
                 aria-invalid={errors.message ? "true" : undefined}
               />
@@ -181,7 +181,7 @@ export default function DonatePage() {
 
           <Link
             href={`/fundraiser/${fundraiserId}`}
-            className="mt-4 block text-center text-sm text-gray-500 hover:text-gray-700"
+            className="mt-4 block text-center text-sm text-warm-500 hover:text-gray-700"
           >
             ← Back to fundraiser
           </Link>

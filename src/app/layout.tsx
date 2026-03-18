@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { Lora } from "next/font/google";
 import { Providers } from "@/components/layout/providers";
 import { Header } from "@/components/layout/header";
 import "./globals.css";
+
+const lora = Lora({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "ourstory — Crowdfunding with Purpose",
@@ -15,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-gray-50">
+    <html lang="en" className={lora.variable}>
+      <body className="min-h-screen bg-warm-50">
         <Providers>
           <Header />
           <main>{children}</main>

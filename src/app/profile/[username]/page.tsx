@@ -115,7 +115,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
       {/* Profile Header */}
       <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-        <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary-100 text-2xl font-bold text-primary-700">
+        <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary-600 text-2xl font-bold text-white ring-4 ring-accent-400">
           {profile.avatarUrl ? (
             <img
               src={profile.avatarUrl}
@@ -127,17 +127,17 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           )}
         </span>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="font-serif text-2xl font-bold text-warm-900">
             {profile.displayName}
           </h1>
-          <p className="text-sm text-gray-500">@{profile.username}</p>
-          <div className="mt-2 flex gap-4 text-sm text-gray-500">
+          <p className="text-sm text-warm-500">@{profile.username}</p>
+          <div className="mt-2 flex gap-4 text-sm text-warm-500">
             <span>
-              <strong className="text-gray-900">{profile._count.followers}</strong>{" "}
+              <strong className="text-warm-900">{profile._count.followers}</strong>{" "}
               follower{profile._count.followers !== 1 ? "s" : ""}
             </span>
             <span>
-              <strong className="text-gray-900">{profile._count.following}</strong>{" "}
+              <strong className="text-warm-900">{profile._count.following}</strong>{" "}
               following
             </span>
           </div>
@@ -169,22 +169,22 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
           {/* Activity Feed */}
           <section>
-            <h2 className="mb-4 text-xl font-bold text-gray-900">Activity</h2>
+            <h2 className="mb-4 font-serif text-xl font-semibold text-warm-900">Activity</h2>
             {activityFeed.length === 0 ? (
-              <p className="text-sm text-gray-500">No activity yet.</p>
+              <p className="text-sm text-warm-500">No activity yet.</p>
             ) : (
               <div className="space-y-3">
                 {activityFeed.map((item) => {
                   if (item.type === "donation") {
                     const d = item.data;
                     return (
-                      <Card key={`donation-${d.id}`}>
+                      <Card key={`donation-${d.id}`} className="border-warm-300 bg-white">
                         <CardContent className="flex items-start gap-3 py-3">
                           <span className="mt-0.5 text-xl">💜</span>
                           <div className="min-w-0 flex-1">
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm text-warm-700">
                               Donated{" "}
-                              <strong>{formatCurrency(d.amount)}</strong> to{" "}
+                              <strong className="text-accent-500">{formatCurrency(d.amount)}</strong> to{" "}
                               <Link
                                 href={`/fundraiser/${d.fundraiser.id}`}
                                 className="font-medium text-primary-600 hover:underline"
@@ -193,11 +193,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                               </Link>
                             </p>
                             {d.message && (
-                              <p className="mt-1 text-sm italic text-gray-500">
+                              <p className="mt-1 font-serif text-sm italic text-warm-500">
                                 &ldquo;{d.message}&rdquo;
                               </p>
                             )}
-                            <p className="mt-1 text-xs text-gray-400">
+                            <p className="mt-1 text-xs text-warm-400">
                               {formatRelativeTime(d.createdAt)}
                             </p>
                           </div>
@@ -208,11 +208,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
                   const f = item.data;
                   return (
-                    <Card key={`fundraiser-${f.id}`}>
+                    <Card key={`fundraiser-${f.id}`} className="border-warm-300 bg-white">
                       <CardContent className="flex items-start gap-3 py-3">
                         <span className="mt-0.5 text-xl">🚀</span>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm text-gray-700">
+                          <p className="text-sm text-warm-700">
                             Created fundraiser{" "}
                             <Link
                               href={`/fundraiser/${f.id}`}
@@ -232,7 +232,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                               </Link>
                             )}
                           </div>
-                          <p className="mt-1 text-xs text-gray-400">
+                          <p className="mt-1 text-xs text-warm-400">
                             {formatRelativeTime(f.createdAt)}
                           </p>
                         </div>
@@ -246,11 +246,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         </div>
 
         {/* Sidebar */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="space-y-6 lg:col-span-1">
           {/* Highlights */}
           {profile.highlights.length > 0 && (
             <section>
-              <h3 className="mb-3 text-lg font-semibold text-gray-900">
+              <h3 className="mb-3 font-serif text-lg font-semibold text-warm-900">
                 Top Supported
               </h3>
               <div className="space-y-2">
@@ -258,12 +258,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   <Link
                     key={h.fundraiserId}
                     href={`/fundraiser/${h.fundraiserId}`}
-                    className="block rounded-lg border border-gray-100 p-3 hover:bg-gray-50"
+                    className="block rounded-lg border border-warm-200 p-3 hover:bg-warm-100"
                   >
-                    <p className="text-sm font-medium text-gray-900 line-clamp-1">
+                    <p className="line-clamp-1 text-sm font-medium text-warm-900">
                       {h.title}
                     </p>
-                    <p className="text-xs text-primary-600">
+                    <p className="text-xs text-accent-500">
                       {formatCurrency(h.total)} donated
                     </p>
                   </Link>
@@ -275,7 +275,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           {/* Communities */}
           {profile.communityFollows.length > 0 && (
             <section>
-              <h3 className="mb-3 text-lg font-semibold text-gray-900">
+              <h3 className="mb-3 font-serif text-lg font-semibold text-warm-900">
                 Communities
               </h3>
               <div className="space-y-2">
@@ -283,7 +283,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   <Link
                     key={cf.community.id}
                     href={`/community/${cf.community.slug}`}
-                    className="block rounded-lg border border-gray-100 p-3 text-sm font-medium text-primary-600 hover:bg-gray-50"
+                    className="block rounded-lg border border-warm-200 p-3 text-sm font-medium text-primary-600 hover:bg-warm-100"
                   >
                     {cf.community.name}
                   </Link>

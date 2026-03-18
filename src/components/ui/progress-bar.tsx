@@ -1,11 +1,8 @@
 import { cn } from "@/lib/utils";
 
 interface ProgressBarProps {
-  /** Percentage value between 0 and 100 */
   value: number;
-  /** Optional label shown above the bar */
   label?: string;
-  /** Show percentage text */
   showPercentage?: boolean;
   className?: string;
 }
@@ -22,14 +19,14 @@ export function ProgressBar({
     <div className={cn("w-full", className)}>
       {(label || showPercentage) && (
         <div className="mb-1 flex items-center justify-between text-sm">
-          {label && <span className="font-medium text-gray-700">{label}</span>}
+          {label && <span className="font-medium text-warm-700">{label}</span>}
           {showPercentage && (
-            <span className="text-gray-500">{clampedValue}%</span>
+            <span className="text-warm-500">{clampedValue}%</span>
           )}
         </div>
       )}
       <div
-        className="h-3 w-full overflow-hidden rounded-full bg-gray-200"
+        className="h-3 w-full overflow-hidden rounded-full bg-warm-200"
         role="progressbar"
         aria-valuenow={clampedValue}
         aria-valuemin={0}
@@ -37,7 +34,7 @@ export function ProgressBar({
         aria-label={label || "Progress"}
       >
         <div
-          className="h-full rounded-full bg-primary-500 transition-all duration-500 ease-out"
+          className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400 transition-all duration-500 ease-out"
           style={{ width: `${clampedValue}%` }}
         />
       </div>
