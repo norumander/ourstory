@@ -3,6 +3,131 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Category {
+  Medical
+  Emergency
+  Education
+  Community
+  Animals
+  Environment
+  Memorial
+  Other
+}
+
+enum EventType {
+  page_load
+  ai_invocation
+  donation
+  navigation
+  auth
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  avatarUrl    String?
+  username     String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  fundraisers      Fundraiser[]
+  donations        Donation[]
+  followers        UserFollow[]      @relation("following")
+  following        UserFollow[]      @relation("follower")
+  communityFollows CommunityFollow[]
+}
+
+model Fundraiser {
+  id            String    @id @default(uuid())
+  title         String
+  story         String
+  goalAmount    Int
+  raisedAmount  Int       @default(0)
+  donationCount Int       @default(0)
+  category      Category
+  imageUrl      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  organizerId String
+  organizer   User        @relation(fields: [organizerId], references: [id])
+  communityId String?
+  community   Community?  @relation(fields: [communityId], references: [id])
+  donations   Donation[]
+
+  @@index([organizerId])
+  @@index([communityId])
+}
+
+model Donation {
+  id        String   @id @default(uuid())
+  amount    Int
+  message   String?
+  createdAt DateTime @default(now())
+
+  donorId      String
+  donor        User       @relation(fields: [donorId], references: [id])
+  fundraiserId String
+  fundraiser   Fundraiser @relation(fields: [fundraiserId], references: [id])
+
+  @@index([donorId])
+  @@index([fundraiserId])
+}
+
+model Community {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  fundraisers Fundraiser[]
+  followers   CommunityFollow[]
+}
+
+model UserFollow {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+
+  followerId  String
+  follower    User     @relation("follower", fields: [followerId], references: [id])
+  followingId String
+  following   User     @relation("following", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model CommunityFollow {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  communityId String
+  community   Community @relation(fields: [communityId], references: [id])
+
+  @@unique([userId, communityId])
+  @@index([userId])
+  @@index([communityId])
+}
+
+model MetricEvent {
+  id        Int       @id @default(autoincrement())
+  eventType EventType
+  payload   Json
+  timestamp DateTime  @default(now())
+
+  @@index([eventType])
+  @@index([timestamp])
 }
