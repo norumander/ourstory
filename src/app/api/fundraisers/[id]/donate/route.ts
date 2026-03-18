@@ -73,13 +73,22 @@ export async function POST(
       data: {
         raisedAmount: { increment: amount },
         donationCount: { increment: 1 },
+        aiImpactStory: null, // Clear cached AI story so it regenerates with new data
       },
     });
 
     return newDonation;
   });
 
-  // Bust cache so fundraiser page shows updated data
+  // Clear community narrative if fundraiser belongs to a community
+  if (fundraiser.communityId) {
+    await prisma.community.update({
+      where: { id: fundraiser.communityId },
+      data: { aiNarrative: null },
+    }).catch(() => {});
+  }
+
+  // Bust cache so pages show updated data
   revalidatePath(`/fundraiser/${id}`);
   revalidatePath("/");
 

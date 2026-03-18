@@ -1,16 +1,48 @@
+import { prisma } from "@/lib/prisma";
 import { generateImpactStory } from "@/lib/ai/impact-story";
-import { Badge } from "@/components/ui/badge";
 
 interface ImpactStoryProps {
+  fundraiserId: string;
   goalAmount: number;
   raisedAmount: number;
   donationCount: number;
   category: string;
   story: string;
+  cachedStory: string | null;
 }
 
-export async function ImpactStory(props: ImpactStoryProps) {
-  const impactStory = await generateImpactStory(props);
+export async function ImpactStory({
+  fundraiserId,
+  goalAmount,
+  raisedAmount,
+  donationCount,
+  category,
+  story,
+  cachedStory,
+}: ImpactStoryProps) {
+  let impactStory = cachedStory;
+
+  // Generate and persist if not cached
+  if (!impactStory) {
+    impactStory = await generateImpactStory({
+      goalAmount,
+      raisedAmount,
+      donationCount,
+      category,
+      story,
+    });
+
+    if (impactStory) {
+      try {
+        await prisma.fundraiser.update({
+          where: { id: fundraiserId },
+          data: { aiImpactStory: impactStory },
+        });
+      } catch {
+        // Non-critical — story still renders, just won't persist
+      }
+    }
+  }
 
   if (!impactStory) return null;
 

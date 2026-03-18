@@ -1,5 +1,4 @@
 import { generateCompletion } from "./service";
-import { cache, hashKey } from "../cache";
 
 interface FundraiserData {
   goalAmount: number;
@@ -13,14 +12,13 @@ interface FundraiserData {
  * Generate an AI Impact Story for a fundraiser page.
  * Returns 2-4 sentences contextualizing donations into real-world impact.
  * Returns null if AI is unavailable — caller should hide the section gracefully.
+ *
+ * Results are persisted to the database by the ImpactStory component.
+ * This function is only called when no cached story exists.
  */
 export async function generateImpactStory(
   data: FundraiserData
 ): Promise<string | null> {
-  const cacheKey = hashKey({ type: "impact-story", ...data });
-  const cached = cache.get<string>(cacheKey);
-  if (cached) return cached;
-
   const goalDollars = (data.goalAmount / 100).toLocaleString();
   const raisedDollars = (data.raisedAmount / 100).toLocaleString();
   const percentage = Math.round((data.raisedAmount / data.goalAmount) * 100);
@@ -41,14 +39,8 @@ Guidelines:
 - Write as if you're explaining the impact to a friend, not generating a report
 - Vary your sentence structure and word choice — avoid templates`;
 
-  const result = await generateCompletion(prompt, {
+  return generateCompletion(prompt, {
     maxTokens: 200,
     temperature: 0.8,
   });
-
-  if (result) {
-    cache.set(cacheKey, result);
-  }
-
-  return result;
 }

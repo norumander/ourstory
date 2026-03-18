@@ -1,16 +1,50 @@
+import { prisma } from "@/lib/prisma";
 import { generateCommunityNarrative } from "@/lib/ai/community-narrative";
 
 interface CommunityNarrativeProps {
+  communityId: string;
   name: string;
   description: string;
   totalRaised: number;
   totalDonations: number;
   fundraiserCount: number;
   topCategories: string[];
+  cachedNarrative: string | null;
 }
 
-export async function CommunityNarrative(props: CommunityNarrativeProps) {
-  const narrative = await generateCommunityNarrative(props);
+export async function CommunityNarrative({
+  communityId,
+  name,
+  description,
+  totalRaised,
+  totalDonations,
+  fundraiserCount,
+  topCategories,
+  cachedNarrative,
+}: CommunityNarrativeProps) {
+  let narrative = cachedNarrative;
+
+  if (!narrative) {
+    narrative = await generateCommunityNarrative({
+      name,
+      description,
+      totalRaised,
+      totalDonations,
+      fundraiserCount,
+      topCategories,
+    });
+
+    if (narrative) {
+      try {
+        await prisma.community.update({
+          where: { id: communityId },
+          data: { aiNarrative: narrative },
+        });
+      } catch {
+        // Non-critical
+      }
+    }
+  }
 
   if (!narrative) return null;
 

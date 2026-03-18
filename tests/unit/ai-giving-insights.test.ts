@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { generateGivingInsights } from "@/lib/ai/giving-insights";
-import { cache } from "@/lib/cache";
 import * as service from "@/lib/ai/service";
 
 vi.mock("@/lib/ai/service", () => ({
@@ -15,7 +14,6 @@ describe("generateGivingInsights", () => {
   ];
 
   beforeEach(() => {
-    cache.clear();
     vi.restoreAllMocks();
   });
 
@@ -86,15 +84,14 @@ describe("generateGivingInsights", () => {
     expect(result).toBeNull();
   });
 
-  it("caches results and returns cached value on second call", async () => {
+  it("calls AI service each time (caching is handled at DB level)", async () => {
     vi.mocked(service.generateCompletion).mockResolvedValue(
-      JSON.stringify({ summary: "Cached", observations: [] })
+      JSON.stringify({ summary: "Result", observations: [] })
     );
 
     await generateGivingInsights(mockDonations);
-    const result2 = await generateGivingInsights(mockDonations);
+    await generateGivingInsights(mockDonations);
 
-    expect(service.generateCompletion).toHaveBeenCalledOnce();
-    expect(result2?.summary).toBe("Cached");
+    expect(service.generateCompletion).toHaveBeenCalledTimes(2);
   });
 });

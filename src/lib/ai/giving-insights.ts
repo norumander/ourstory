@@ -1,5 +1,4 @@
 import { generateCompletion } from "./service";
-import { cache, hashKey } from "../cache";
 
 interface DonationRecord {
   amount: number;
@@ -24,17 +23,6 @@ export async function generateGivingInsights(
   if (donations.length < 2) {
     return null;
   }
-
-  const cacheKey = hashKey({
-    type: "giving-insights",
-    donations: donations.map((d) => ({
-      amount: d.amount,
-      category: d.category,
-      date: new Date(d.createdAt).toISOString().slice(0, 10),
-    })),
-  });
-  const cached = cache.get<InsightsResult>(cacheKey);
-  if (cached) return cached;
 
   const totalCents = donations.reduce((sum, d) => sum + d.amount, 0);
   const totalDollars = (totalCents / 100).toLocaleString();
@@ -79,7 +67,6 @@ Guidelines:
   if (!result) return null;
 
   try {
-    // Extract JSON from the response (handle markdown code blocks)
     const jsonStr = result.replace(/```json?\n?/g, "").replace(/```/g, "").trim();
     const parsed = JSON.parse(jsonStr) as InsightsResult;
 
@@ -87,10 +74,7 @@ Guidelines:
       return null;
     }
 
-    // Limit to 3 observations
     parsed.observations = parsed.observations.slice(0, 3);
-
-    cache.set(cacheKey, parsed);
     return parsed;
   } catch {
     console.error("[AI Giving Insights] Failed to parse AI response");

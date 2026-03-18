@@ -138,6 +138,7 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
         {/* AI Community Narrative */}
         <Suspense>
           <CommunityNarrative
+            communityId={community.id}
             name={community.name}
             description={community.description}
             totalRaised={community.stats.totalRaised}
@@ -146,6 +147,7 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
             topCategories={[
               ...new Set(community.fundraisers.map((f) => f.category)),
             ]}
+            cachedNarrative={community.aiNarrative}
           />
         </Suspense>
 

@@ -134,11 +134,13 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
           {/* AI Impact Story */}
           <Suspense>
             <ImpactStory
+              fundraiserId={fundraiser.id}
               goalAmount={fundraiser.goalAmount}
               raisedAmount={fundraiser.raisedAmount}
               donationCount={fundraiser.donationCount}
               category={fundraiser.category}
               story={fundraiser.story}
+              cachedStory={fundraiser.aiImpactStory}
             />
           </Suspense>
 

@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { generateImpactStory } from "@/lib/ai/impact-story";
-import { cache } from "@/lib/cache";
 import * as service from "@/lib/ai/service";
 
 vi.mock("@/lib/ai/service", () => ({
@@ -17,7 +16,6 @@ describe("generateImpactStory", () => {
   };
 
   beforeEach(() => {
-    cache.clear();
     vi.restoreAllMocks();
   });
 
@@ -42,14 +40,13 @@ describe("generateImpactStory", () => {
     expect(result).toBe("Every dollar brings hope to displaced families.");
   });
 
-  it("caches the result and returns cached value on second call", async () => {
-    vi.mocked(service.generateCompletion).mockResolvedValue("Cached story");
+  it("calls AI service each time (caching is handled at DB level)", async () => {
+    vi.mocked(service.generateCompletion).mockResolvedValue("Story text");
 
     await generateImpactStory(mockData);
-    const result2 = await generateImpactStory(mockData);
+    await generateImpactStory(mockData);
 
-    expect(service.generateCompletion).toHaveBeenCalledOnce();
-    expect(result2).toBe("Cached story");
+    expect(service.generateCompletion).toHaveBeenCalledTimes(2);
   });
 
   it("returns null when AI service fails", async () => {
@@ -59,10 +56,10 @@ describe("generateImpactStory", () => {
     expect(result).toBeNull();
   });
 
-  it("does not cache null results", async () => {
+  it("returns null without caching on failure", async () => {
     vi.mocked(service.generateCompletion).mockResolvedValue(null);
 
-    await generateImpactStory(mockData);
-    expect(cache.size()).toBe(0);
+    const result = await generateImpactStory(mockData);
+    expect(result).toBeNull();
   });
 });
