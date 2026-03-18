@@ -15,6 +15,7 @@ import {
 } from "@/lib/utils";
 import { DonationList } from "@/components/fundraiser/donation-list";
 import { ShareButton } from "@/components/fundraiser/share-button";
+import { ImpactStory } from "@/components/fundraiser/impact-story";
 
 interface FundraiserPageProps {
   params: Promise<{ id: string }>;
@@ -107,7 +108,16 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
             </div>
           </div>
 
-          {/* AI Impact Story placeholder — TASK-015 */}
+          {/* AI Impact Story */}
+          <Suspense>
+            <ImpactStory
+              goalAmount={fundraiser.goalAmount}
+              raisedAmount={fundraiser.raisedAmount}
+              donationCount={fundraiser.donationCount}
+              category={fundraiser.category}
+              story={fundraiser.story}
+            />
+          </Suspense>
 
           {/* Donations */}
           <div className="mt-8">

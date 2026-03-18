@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, getInitials } from "@/lib/utils";
 import { FollowCommunityButton } from "@/components/community/follow-button";
+import { CommunityNarrative } from "@/components/community/community-narrative";
 
 interface CommunityPageProps {
   params: Promise<{ slug: string }>;
@@ -122,7 +123,19 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
         </Card>
       </div>
 
-      {/* AI Community Narrative placeholder — TASK-016 */}
+      {/* AI Community Narrative */}
+      <Suspense>
+        <CommunityNarrative
+          name={community.name}
+          description={community.description}
+          totalRaised={community.stats.totalRaised}
+          totalDonations={community.stats.totalDonations}
+          fundraiserCount={community.stats.fundraiserCount}
+          topCategories={[
+            ...new Set(community.fundraisers.map((f) => f.category)),
+          ]}
+        />
+      </Suspense>
 
       {/* Leaderboard */}
       <section>

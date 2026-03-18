@@ -11,6 +11,7 @@ import {
   getInitials,
 } from "@/lib/utils";
 import { FollowUserButton } from "@/components/profile/follow-button";
+import { GivingInsights } from "@/components/profile/giving-insights";
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;
@@ -151,7 +152,20 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Main Content */}
         <div className="lg:col-span-2">
-          {/* AI Giving Insights placeholder — TASK-017 (own profile only) */}
+          {/* AI Giving Insights — own profile only */}
+          {isOwnProfile && (
+            <Suspense>
+              <GivingInsights
+                donations={profile.donations.map((d) => ({
+                  amount: d.amount,
+                  category: d.fundraiser.category,
+                  fundraiserTitle: d.fundraiser.title,
+                  createdAt: d.createdAt,
+                }))}
+                donationCount={profile.donations.length}
+              />
+            </Suspense>
+          )}
 
           {/* Activity Feed */}
           <section>
