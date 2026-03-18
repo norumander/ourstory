@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,7 @@ async function getCommunities() {
 }
 
 export default async function Home() {
+  const session = await auth();
   let fundraisers: Awaited<ReturnType<typeof getFeaturedFundraisers>> = [];
   let communities: Awaited<ReturnType<typeof getCommunities>> = [];
 
@@ -52,14 +54,29 @@ export default async function Home() {
             generosity.
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
-            <Link href="/register">
-              <Button size="lg">Get started</Button>
-            </Link>
-            <Link href="/register">
-              <Button variant="outline" size="lg">
-                Start a fundraiser
-              </Button>
-            </Link>
+            {session?.user ? (
+              <>
+                <Link href={`/profile/${(session.user as { username?: string }).username}`}>
+                  <Button size="lg">My profile</Button>
+                </Link>
+                <Link href="/fundraiser/new">
+                  <Button variant="outline" size="lg">
+                    Start a fundraiser
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/register">
+                  <Button size="lg">Get started</Button>
+                </Link>
+                <Link href="/fundraiser/new">
+                  <Button variant="outline" size="lg">
+                    Start a fundraiser
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </section>
 
