@@ -6,30 +6,34 @@ interface CompletionOptions {
 }
 
 /**
- * Provider-agnostic AI service abstraction.
- * Supports OpenAI-compatible APIs (default) and Anthropic.
- * Selected via AI_PROVIDER env var.
+ * Provider-agnostic AI service with automatic fallback.
  *
- * Returns null on any failure — callers should handle graceful degradation.
+ * Tries the primary provider (AI_PROVIDER env var, default "openai") first.
+ * If it fails, automatically falls back to the other provider (if its API key is configured).
+ * Returns null only if both providers fail or neither is configured.
  */
 export async function generateCompletion(
   prompt: string,
   options: CompletionOptions = {}
 ): Promise<string | null> {
-  const provider = process.env.AI_PROVIDER || "openai";
+  const primary = process.env.AI_PROVIDER || "openai";
+  const providers = primary === "anthropic"
+    ? [callAnthropic, callOpenAI]
+    : [callOpenAI, callAnthropic];
 
-  try {
-    if (provider === "anthropic") {
-      return await callAnthropic(prompt, options);
+  for (const callProvider of providers) {
+    try {
+      const result = await callProvider(prompt, options);
+      if (result) return result;
+    } catch (error) {
+      console.warn("[AI Service] Provider failed, trying fallback:", {
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
-    return await callOpenAI(prompt, options);
-  } catch (error) {
-    console.error("[AI Service] Completion failed:", {
-      provider,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    return null;
   }
+
+  console.error("[AI Service] All providers failed or unconfigured");
+  return null;
 }
 
 async function callOpenAI(
@@ -37,10 +41,7 @@ async function callOpenAI(
   options: CompletionOptions
 ): Promise<string | null> {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    console.warn("[AI Service] OPENAI_API_KEY not configured");
-    return null;
-  }
+  if (!apiKey) return null;
 
   const baseUrl = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
@@ -81,10 +82,7 @@ async function callAnthropic(
   options: CompletionOptions
 ): Promise<string | null> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    console.warn("[AI Service] ANTHROPIC_API_KEY not configured");
-    return null;
-  }
+  if (!apiKey) return null;
 
   const model = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-20250514";
 
