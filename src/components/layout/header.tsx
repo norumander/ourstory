@@ -36,6 +36,12 @@ export function Header() {
           >
             Home
           </Link>
+          <Link
+            href="/fundraisers"
+            className="rounded-lg px-3 py-2 text-sm font-medium text-warm-600 hover:bg-warm-100 hover:text-warm-900"
+          >
+            Browse
+          </Link>
           {status === "authenticated" && session?.user ? (
             <>
               <Link
@@ -125,6 +131,13 @@ export function Header() {
             onClick={() => setMobileMenuOpen(false)}
           >
             Home
+          </Link>
+          <Link
+            href="/fundraisers"
+            className="flex min-h-[44px] items-center rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Browse fundraisers
           </Link>
           {status === "authenticated" && session?.user ? (
             <>

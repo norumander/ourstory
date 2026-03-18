@@ -89,9 +89,17 @@ export default async function Home() {
         {/* Featured Fundraisers */}
         {fundraisers.length > 0 && (
           <section className="mb-12">
-            <h2 className="mb-6 font-serif text-2xl font-bold text-warm-900">
-              Featured fundraisers
-            </h2>
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="font-serif text-2xl font-bold text-warm-900">
+                Featured fundraisers
+              </h2>
+              <Link
+                href="/fundraisers"
+                className="text-sm font-medium text-primary-600 hover:text-primary-700"
+              >
+                Browse all →
+              </Link>
+            </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {fundraisers.map((f) => (
                 <Link key={f.id} href={`/fundraiser/${f.id}`}>
