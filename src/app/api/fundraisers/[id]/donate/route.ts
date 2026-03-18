@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -77,6 +78,10 @@ export async function POST(
 
     return newDonation;
   });
+
+  // Bust cache so fundraiser page shows updated data
+  revalidatePath(`/fundraiser/${id}`);
+  revalidatePath("/");
 
   return NextResponse.json({ donation: { id: donation.id } }, { status: 201 });
 }

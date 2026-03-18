@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Category } from "@prisma/client";
@@ -91,6 +92,16 @@ export async function POST(request: NextRequest) {
       communityId: communityId || null,
     },
   });
+
+  revalidatePath("/");
+  if (communityId) {
+    // Revalidate the community page if fundraiser is associated
+    const community = await prisma.community.findUnique({
+      where: { id: communityId },
+      select: { slug: true },
+    });
+    if (community) revalidatePath(`/community/${community.slug}`);
+  }
 
   return NextResponse.json({ fundraiser: { id: fundraiser.id } }, { status: 201 });
 }

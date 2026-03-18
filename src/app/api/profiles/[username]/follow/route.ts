@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -68,6 +69,7 @@ export async function POST(
 
   if (existing) {
     await prisma.userFollow.delete({ where: { id: existing.id } });
+    revalidatePath(`/profile/${username}`);
     return NextResponse.json({ following: false });
   }
 
@@ -78,5 +80,6 @@ export async function POST(
     },
   });
 
+  revalidatePath(`/profile/${username}`);
   return NextResponse.json({ following: true });
 }
