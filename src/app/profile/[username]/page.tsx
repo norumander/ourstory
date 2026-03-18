@@ -24,7 +24,14 @@ async function getProfile(username: string) {
     where: { username },
     include: {
       _count: {
-        select: { followers: true, following: true },
+        select: { followers: true, following: true, communityFollows: true },
+      },
+      following: {
+        include: {
+          following: {
+            select: { id: true, displayName: true, username: true },
+          },
+        },
       },
       fundraisers: {
         orderBy: { createdAt: "desc" },
@@ -139,7 +146,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               follower{profile._count.followers !== 1 ? "s" : ""}
             </span>
             <span>
-              <strong className="text-warm-900">{profile._count.following}</strong>{" "}
+              <strong className="text-warm-900">{profile._count.following + profile._count.communityFollows}</strong>{" "}
               following
             </span>
           </div>
@@ -298,6 +305,31 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     <p className="text-xs text-accent-500">
                       {formatCurrency(h.total)} donated
                     </p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Following (users) */}
+          {profile.following.length > 0 && (
+            <section>
+              <h3 className="mb-3 font-serif text-lg font-semibold text-warm-900">
+                Following
+              </h3>
+              <div className="space-y-2">
+                {profile.following.map((f) => (
+                  <Link
+                    key={f.following.id}
+                    href={`/profile/${f.following.username}`}
+                    className="flex items-center gap-2 rounded-lg border border-warm-200 p-3 hover:bg-warm-100"
+                  >
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-600 text-[10px] font-semibold text-white ring-1 ring-accent-400">
+                      {getInitials(f.following.displayName)}
+                    </span>
+                    <span className="text-sm font-medium text-warm-900">
+                      {f.following.displayName}
+                    </span>
                   </Link>
                 ))}
               </div>

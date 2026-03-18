@@ -31,12 +31,6 @@ export function Header() {
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 md:flex">
           <Link
-            href="/"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-warm-600 hover:bg-warm-100 hover:text-warm-900"
-          >
-            Home
-          </Link>
-          <Link
             href="/fundraisers"
             className="rounded-lg px-3 py-2 text-sm font-medium text-warm-600 hover:bg-warm-100 hover:text-warm-900"
           >
@@ -125,13 +119,6 @@ export function Header() {
         )}
       >
         <div className="space-y-1 px-4 py-3">
-          <Link
-            href="/"
-            className="flex min-h-[44px] items-center rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Home
-          </Link>
           <Link
             href="/fundraisers"
             className="flex min-h-[44px] items-center rounded-lg px-3 py-2 text-sm font-medium text-warm-700 hover:bg-warm-100"

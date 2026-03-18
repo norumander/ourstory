@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ProgressBar } from "@/components/ui/progress-bar";
@@ -38,6 +39,7 @@ async function getFundraiser(id: string) {
 
 export default async function FundraiserPage({ params }: FundraiserPageProps) {
   const { id } = await params;
+  const session = await auth();
 
   let fundraiser: Awaited<ReturnType<typeof getFundraiser>>;
   try {
@@ -49,6 +51,8 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
   if (!fundraiser) {
     notFound();
   }
+
+  const isOrganizer = session?.user?.id === fundraiser.organizer.id;
 
   const progress = calculateProgress(fundraiser.raisedAmount, fundraiser.goalAmount);
 
@@ -110,6 +114,11 @@ export default async function FundraiserPage({ params }: FundraiserPageProps) {
               </Link>
               <p className="text-xs text-warm-500">Organizer</p>
             </div>
+            {isOrganizer && (
+              <Link href={`/fundraiser/${fundraiser.id}/edit`} className="ml-auto">
+                <Button variant="outline" size="sm">Edit</Button>
+              </Link>
+            )}
           </div>
 
           {/* Story */}
