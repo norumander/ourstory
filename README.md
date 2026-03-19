@@ -1,76 +1,152 @@
-# Project Template — Claude Code Bootstrap
+# ourstory
 
-A standardized project template for bootstrapping production-quality projects with Claude Code.
+An AI-enhanced crowdfunding platform that weaves individual acts of giving into a collective narrative — three interconnected pages (Profile, Fundraiser, Community) faithful to GoFundMe's UX patterns, with an original warm editorial visual design and AI features that surface impact insights, community stories, and personalized giving intelligence.
 
-## Quick Start
+**Live:** [https://ourstory-theta.vercel.app](https://ourstory-theta.vercel.app)
 
-### 1. Extract golden requirements
+## Features
 
-Open your **"Golden Requirements"** Claude Project. Paste your raw source materials (assignment brief, client spec, challenge description — whatever you have). It extracts the non-negotiable constraints into a `GOLDEN.md`.
+### Three Core Pages
+- **Fundraiser Page** (`/fundraiser/[id]`) — Hero image with cinematic title overlay, progress bar, donation list ("Words of support"), organizer info, share button, AI Impact Snapshot
+- **Community Page** (`/community/[slug]`) — Header image overlay, aggregate stats, fundraiser leaderboard, follow toggle, AI Community Story
+- **Profile Page** (`/profile/[username]`) — Avatar with gold ring, activity feed, top-supported fundraisers, followed users/communities, AI Giving Insights (owner-only)
 
-### 2. Generate your PRD
+### AI Features
+- **Impact Snapshot** — Contextualizes fundraised amounts into tangible, real-world outcomes (generated per fundraiser, persisted in DB, regenerated after donations)
+- **Community Story** — Synthesizes a community's collective giving into a narrative (not a stat dump)
+- **Giving Insights** — Personalized analysis of a donor's giving patterns with specific observations
+- **Story Coach** — "Help me write" button on fundraiser creation that generates a polished story from rough notes
+- Provider-agnostic: supports OpenAI and Anthropic with automatic fallback
 
-Open your **"PRD Workshop"** Claude Project. Describe your idea and provide your `GOLDEN.md` as a reference. The interviewer will walk you through generating a complete `PRD.md` that respects every golden constraint.
+### Authentication
+- Email/password registration and login (NextAuth.js v5, bcrypt)
+- Google OAuth (supplemental — both methods work independently)
+- JWT sessions with 7-day expiry
 
-### 3. Create your repo
+### Additional Features
+- Browse all fundraisers with category filtering (`/fundraisers`)
+- Fundraiser creation and editing (organizer-only)
+- Mock donation flow with prominent "no real money" banner
+- User and community follow system with follower/following pages
+- Web Share API on mobile, clipboard fallback on desktop
+- Metrics dashboard (`/admin/metrics`) with admin-only access
+- ISR caching (30-60s) with on-demand revalidation after mutations
 
-Click **"Use this template"** on GitHub to create a new repository from this template.
+## Tech Stack
 
-### 4. Add your files
-
-Copy both `GOLDEN.md` and `PRD.md` into the repo root.
-
-### 5. Start Claude Code
-
-Open the project directory in Claude Code. It will detect the bootstrap trigger (`CLAUDE.md` + `PRD.md`, no `ARCHITECTURE.md`) and begin the phased initialization:
-
-- **Phase 0**: Init & plan — git setup, stack confirmation, planning gate
-- **Phase 1**: Generate module files — ARCHITECTURE.md, IMPLEMENTATION.md, DECISIONS.md, TESTING.md
-- **Phase 2**: Scaffold — directory structure, dependencies, tooling
-- **Phase 3**: Validation checkpoint — final review before coding begins
-
-Each phase ends with a checkpoint and a fresh session to manage context.
-
-## What's Included
-
-```
-├── CLAUDE.md                        # Agent operating manual
-├── .claude/
-│   └── commands/
-│       ├── status.md                # /status — current task + progress
-│       ├── next.md                  # /next — plan the next task
-│       ├── review.md                # /review — self-review against Definition of Done
-│       ├── checkpoint.md            # /checkpoint — write session state
-│       ├── recover.md               # /recover — context recovery for new sessions
-│       └── stuck.md                 # /stuck — error recovery protocol
-├── README.md                        # This file
-├── PRD.md                           # ← You add this (via PRD Workshop)
-└── GOLDEN.md                        # ← You add this (via Golden Requirements)
-```
-
-## What Gets Generated
-
-After bootstrap, Claude Code produces:
-
-- `ARCHITECTURE.md` — system design, components, data flow
-- `IMPLEMENTATION.md` — sequenced tasks with acceptance criteria
-- `DECISIONS.md` — architecture decision records
-- `TESTING.md` — test strategy and conventions
-- Project scaffold (directories, dependencies, tooling)
-
-## Slash Commands
-
-| Command | What it does |
+| Layer | Technology |
 |---|---|
-| `/status` | Report current task, progress, and blockers |
-| `/next` | Pick up and plan the next TODO task |
-| `/review` | Self-review current work against Definition of Done |
-| `/checkpoint` | Write a session checkpoint for clean handoffs |
-| `/recover` | Full context recovery when starting a new session |
-| `/stuck` | Stop thrashing, revert, and present the problem |
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Database | PostgreSQL (Supabase) |
+| ORM | Prisma |
+| Auth | NextAuth.js v5 (Credentials + Google OAuth) |
+| AI | Provider-agnostic (OpenAI / Anthropic with fallback) |
+| Tests | Vitest (55 unit tests) |
+| Deployment | Vercel |
 
-## Prerequisites
+## Design System
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
-- A `GOLDEN.md` generated via the Golden Requirements Claude Project (from your raw source materials)
-- A `PRD.md` generated via the PRD Workshop Claude Project (referencing your GOLDEN.md)
+Warm editorial design — not a typical SaaS template.
+
+- **Palette:** Warm Plum (#5c3d6e) primary, Terracotta (#c47d3c) secondary, Cream (#faf7f2) canvas
+- **Typography:** Lora (serif) for headlines, AI narratives, and pull-quotes; Inter for functional UI
+- **Signature elements:** Cinematic hero image overlays, editorial AI pull-quotes with terracotta accent tabs, italic serif donation messages, gold avatar rings, warm borders throughout
+
+## Getting Started
+
+### Prerequisites
+- Node.js 22+
+- A Supabase project (free tier works)
+- OpenAI and/or Anthropic API key (optional — AI features degrade gracefully)
+
+### Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env.local
+# Fill in: DATABASE_URL, AUTH_SECRET, API keys
+
+# Push schema to database
+npx prisma db push
+
+# Seed with demo data
+npx prisma db seed
+
+# Start development server
+npm run dev
+```
+
+### Demo Account
+- **Email:** `demo@ourstory.app`
+- **Password:** `demodemo123`
+
+### Environment Variables
+
+See `.env.example` for the full list. Required:
+- `DATABASE_URL` — Supabase PostgreSQL connection string
+- `AUTH_SECRET` — Generate with `openssl rand -base64 32`
+
+Optional:
+- `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` — For AI features
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — For Google OAuth
+- `AI_PROVIDER` — `openai` (default) or `anthropic`
+
+## Project Structure
+
+```
+ourstory/
+├── docs/
+│   ├── ARCHITECTURE.md          # System design and component diagram
+│   ├── IMPLEMENTATION.md        # Task tracking and session log
+│   ├── DECISIONS.md             # 13 Architecture Decision Records
+│   └── TESTING.md               # Test strategy and conventions
+├── prisma/
+│   ├── schema.prisma            # 7 models, 2 enums
+│   └── seed.ts                  # Demo data (6 users, 9 fundraisers, 33 donations)
+├── src/
+│   ├── app/                     # Next.js App Router pages and API routes
+│   ├── components/              # UI primitives + domain components
+│   ├── lib/                     # Auth, AI service, Prisma, utilities
+│   └── types/                   # TypeScript type augmentations
+├── tests/unit/                  # 55 Vitest unit tests
+├── CLAUDE.md                    # Agent operating manual
+├── PRD.md                       # Product requirements
+├── GOLDEN.md                    # Non-negotiable constraints
+└── METRICS.md                   # Instrumentation documentation
+```
+
+## Architecture Decisions
+
+Key decisions documented in `docs/DECISIONS.md`:
+
+- **ADR-001:** Next.js 15 + Prisma + Supabase + NextAuth.js stack
+- **ADR-004:** Provider-agnostic AI with env-var switching
+- **ADR-009:** AI content persisted in DB (not Redis) — zero extra infrastructure
+- **ADR-013:** ISR caching with on-demand revalidation — sub-100ms page loads
+
+See all 13 ADRs for the full rationale behind each architectural choice.
+
+## Golden Requirements
+
+All 13 non-negotiable requirements from `GOLDEN.md` are satisfied:
+
+| Requirement | Status |
+|---|---|
+| GR-SEC-1: No plaintext passwords | ✅ bcrypt, cost ≥ 10 |
+| GR-SEC-2: No secrets in client/VCS | ✅ env vars only |
+| GR-SEC-3: Mock payments obvious | ✅ Prominent banner |
+| GR-ARCH-1: Three distinct pages | ✅ Profile, Fundraiser, Community |
+| GR-ARCH-2: Interconnected navigation | ✅ Cross-links, no dead ends |
+| GR-ARCH-3: Progressive loading | ✅ Suspense boundaries |
+| GR-PERF-1: Public HTTPS deployment | ✅ Vercel |
+| GR-QUAL-1: Core logic tested | ✅ 55 unit tests |
+| GR-QUAL-2: Instrumentation documented | ✅ METRICS.md + MetricEvent |
+| GR-SCOPE-1: GoFundMe UX, original visual | ✅ Warm editorial design |
+| GR-SCOPE-2: Mobile-responsive | ✅ 360-428px tested |
+| GR-AC-1: AI feels natural | ✅ Editorial pull-quotes |
+| GR-AC-2: Real auth | ✅ Email/password + Google OAuth |

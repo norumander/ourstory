@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-TASK-021: Mobile Responsiveness Verification, TASK-022: Deployment
+All core tasks and stretch goals complete. Project deployed and live.
 
 ## Tasks
 
@@ -321,7 +321,7 @@ TASK-021: Mobile Responsiveness Verification, TASK-022: Deployment
   - [ ] Input validation on all API endpoints (400 on malformed requests)
 
 ### TASK-021: Mobile Responsiveness Verification
-- **Status**: TODO
+- **Status**: DONE (2026-03-18)
 - **Priority**: P0
 - **Description**: Systematic mobile responsiveness pass on all pages per PRD Requirement 14 and GR-SCOPE-2.
 - **Dependencies**: TASK-007, TASK-008, TASK-009, TASK-010, TASK-013
@@ -334,7 +334,7 @@ TASK-021: Mobile Responsiveness Verification, TASK-022: Deployment
   - [ ] Playwright tests pass at 375px and 428px viewports
 
 ### TASK-022: Deployment to Vercel
-- **Status**: TODO
+- **Status**: DONE (2026-03-18)
 - **Priority**: P0
 - **Description**: Deploy the application to Vercel with all environment variables configured. Verify public HTTPS access (GR-PERF-1).
 - **Dependencies**: All tasks
@@ -349,13 +349,31 @@ TASK-021: Mobile Responsiveness Verification, TASK-022: Deployment
 
 ## Completed
 
-(None yet)
+All 22 core tasks (TASK-001 through TASK-022) and all 3 stretch goals completed 2026-03-17 to 2026-03-18.
+
+### Stretch Goals
+- **STRETCH-001**: AI Story Coach — DONE (2026-03-18)
+- **STRETCH-002**: Google OAuth social login — DONE (2026-03-18)
+- **STRETCH-003**: Web Share API on mobile — DONE (2026-03-18)
+
+### Post-MVP Additions (2026-03-18)
+- Warm editorial UI redesign (Warm Plum + Terracotta + Cream palette, Lora + Inter typography)
+- Browse fundraisers page with category filtering
+- Fundraiser editing (organizer-only)
+- Followers/following connections page
+- AI content persisted in database (not in-memory cache)
+- ISR caching with on-demand revalidation
+- Admin email allowlist on metrics dashboard
+- Error boundary and 404 page
+- Code review fixes (follow button revert bug, registration error handling, category validation)
 
 ## Backlog
 
-- **STRETCH-001**: AI Story Coach on fundraiser creation form
-- **STRETCH-002**: Google OAuth social login
-- **STRETCH-003**: Web Share API on mobile (extends TASK-007 Share CTA)
+See ADR-007 through ADR-013 in `docs/DECISIONS.md` for deferred improvements with rationale and migration paths:
+- Rate limiting (ADR-007)
+- Pagination (ADR-008)
+- API route integration tests (ADR-011)
+- FundraiserCard component extraction (ADR-012)
 
 ## Session Log
 
